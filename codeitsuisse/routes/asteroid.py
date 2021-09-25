@@ -13,7 +13,7 @@ def evaluate1():
     logging.info("data sent for evaluation {}".format(data))
     inputValue = data.get("test_cases")
     # result = inputValue * inputValue
-    # logging.info("My result :{}".format(result))
+    logging.info("My result :{}".format(result))
     out = {}
     a=[]
     x1={}
@@ -21,6 +21,7 @@ def evaluate1():
         x= maximize(i)
         out = {'input': i, 'score': x[0], 'origin': x[1]}
         a.append(out)
+    logging.info("My result :{}".format(a))
     return json.dumps(a)
     
 
