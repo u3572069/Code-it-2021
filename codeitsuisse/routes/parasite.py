@@ -21,7 +21,7 @@ def evaluate2():
         x= case1and2(i["grid"], i["interestedIndividuals"])
         for k in range(0, len(i["interestedIndividuals"])):
             x1[i["interestedIndividuals"][k]]=x[0][k]
-        out = {'room': i["room"], 'p1': x[0], 'p2' : x[1], 'p3': case3(i["grid"]), 'p4' : x[2]}
+        out = {'room': i["room"], 'p1': x1, 'p2' : x[1], 'p3': case3(i["grid"]), 'p4' : x[2]}
         a.append(out)
     logging.info("My result :{}".format(a))
     return json.dumps(a)
