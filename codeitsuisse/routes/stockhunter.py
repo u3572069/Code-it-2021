@@ -34,6 +34,7 @@ def sevaluate():
         maps = draw(riskcost)
         out = { "gridMap": maps, "minimumCost": x}
         a.append(out)
+    logging.info("My result :{}".format(a))
     return json.dumps(a)
 
     
