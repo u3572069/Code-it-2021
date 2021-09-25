@@ -11,8 +11,8 @@ logger = logging.getLogger(__name__)
 def cevaluate():
     data = request.get_json()
     logging.info("data sent for evaluation {}".format(data))
-    x = find_ak(data[0])
-    t = calculate(data, x[0])
+    a,x = find_ak(data[0])
+    t = calculate(data, a)
     out = [x[1]]
     for i in t:
         out.append(i)

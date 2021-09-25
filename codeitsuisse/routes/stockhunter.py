@@ -29,7 +29,7 @@ def sevaluate():
 
         rect_diff_x = abs(entry_x - target_x)
         rect_diff_y = abs(entry_y - target_y)
-        riskcost = return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, griddepth, gridkey)
+        riskcost = return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, griddepth, gridkey, target_x, target_y)
         x = minCost(riskcost, target_x, target_y)
         maps = draw(riskcost)
         out = { "gridMap": maps, "minimumCost": x}
@@ -52,7 +52,7 @@ def sevaluate():
 import sys
 
 
-def return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, griddepth, gridkey):
+def return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, griddepth, gridkey, target_x, target_y):
     grid = [[0 for x in range(rect_diff_y+1)] for x in range(rect_diff_x+1)]
     for i in range(len(grid)):
         grid[i][0] = i * horizontalStepper
@@ -61,6 +61,7 @@ def return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, g
     for i in range(1,len(grid)):
         for j in range(1,len(grid[0])):
                 grid[i][j] = (grid[i-1][j]+griddepth)%gridkey * (grid[i][j-1]+griddepth)%gridkey
+    grid[target_x][target_y] = 0
             
     for i in range(len(grid)):
         for j in range(len(grid[i])):
