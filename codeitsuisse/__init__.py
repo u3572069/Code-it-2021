@@ -7,5 +7,6 @@ import codeitsuisse.routes.fixedrace
 import codeitsuisse.routes.decoder
 import codeitsuisse.routes.tictactoe
 import codeitsuisse.routes.stockhunter
+import codeitsuisse.routes.swiss
 
 

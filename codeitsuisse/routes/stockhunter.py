@@ -9,28 +9,32 @@ logger = logging.getLogger(__name__)
 
 @app.route('/stock-hunter', methods=['POST'])
 def sevaluate():
+    sys.setrecursionlimit(10**6)
     input = request.get_json()
+    a=[]
     logging.info("data sent for evaluation {}".format(input))
-    griddepth = input[0]["gridDepth"]
-    gridkey = input[0]["gridKey"]
-    horizontalStepper = input[0]["horizontalStepper"]
-    verticalStepper = input[0]["verticalStepper"]
+    for i in input:
+        griddepth = i["gridDepth"]
+        gridkey = i["gridKey"]
+        horizontalStepper = i["horizontalStepper"]
+        verticalStepper = i["verticalStepper"]
 
-    entry = input[0]["entryPoint"]
-    entry_x = entry["first"]
-    entry_y = entry["second"]
+        entry = i["entryPoint"]
+        entry_x = entry["first"]
+        entry_y = entry["second"]
 
-    target = input[0]["targetPoint"]
-    target_x = target["first"]
-    target_y = target["second"]
+        target = i["targetPoint"]
+        target_x = target["first"]
+        target_y = target["second"]
 
-    rect_diff_x = abs(entry_x - target_x)
-    rect_diff_y = abs(entry_y - target_y)
-    grid_cost = create_grid_cost(rect_diff_x, rect_diff_y, griddepth, gridkey, horizontalStepper, verticalStepper)
-    min = minCost(grid_cost, target_x , target_y)
-    grid = create_grid(rect_diff_x, rect_diff_y, griddepth, gridkey, horizontalStepper, verticalStepper)
-    out = { "gridMap": grid, "minimumCost": min}
-    return json.dumps(out)
+        rect_diff_x = abs(entry_x - target_x)
+        rect_diff_y = abs(entry_y - target_y)
+        grid_cost = create_grid_cost(rect_diff_x, rect_diff_y, griddepth, gridkey, horizontalStepper, verticalStepper)
+        min = minCost(grid_cost, target_x , target_y)
+        grid = create_grid(rect_diff_x, rect_diff_y, griddepth, gridkey, horizontalStepper, verticalStepper)
+        out = { "gridMap": grid, "minimumCost": min}
+        a.append(out)
+    return json.dumps(a)
 
     
 
