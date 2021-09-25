@@ -61,7 +61,7 @@ def answer(s1):
     max_score = 0
     if(len(s1)==1):
         return([1, 0])
-    for sub in range(len(s1)//7, 6*len(s1)//7):
+    for sub in range(len(s1)//20, 19*len(s1)//20):
         point = points(count(s1[0:sub])[::-1], count(s1[sub+1:]))
         if(point>max_score):
             max_score = point
