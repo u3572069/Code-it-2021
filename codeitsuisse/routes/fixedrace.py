@@ -9,6 +9,6 @@ logger = logging.getLogger(__name__)
 
 @app.route('/fixedrace', methods=['POST'])
 def fevaluate():
-    data = request.args.get('data')
+    data = request.get_data('data')
 
     return data
