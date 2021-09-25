@@ -23,7 +23,7 @@ def stigevaluate():
             q = random.randint(1,maxRating)
             p = random.randint(1,q)
 
-        out = { 'p':p, 'q':q}
+        out = { 'p':175813, 'q':1000000000}
         a.append(out)
     return json.dumps(a)
 
