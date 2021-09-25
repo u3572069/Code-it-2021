@@ -55,9 +55,9 @@ import sys
 def return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, griddepth, gridkey):
     grid = [[0 for x in range(rect_diff_y+1)] for x in range(rect_diff_x+1)]
     for i in range(len(grid)):
-        grid[i][0] = i * verticalStepper
+        grid[i][0] = i * horizontalStepper
     for j in range(len(grid[0])):
-        grid[0][j] = j * horizontalStepper
+        grid[0][j] = j * verticalStepper
     for i in range(1,len(grid)):
         for j in range(1,len(grid[0])):
                 grid[i][j] = (grid[i-1][j]+griddepth)%gridkey * (grid[i][j-1]+griddepth)%gridkey
