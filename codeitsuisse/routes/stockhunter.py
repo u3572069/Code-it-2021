@@ -53,7 +53,7 @@ import sys
 
 
 def return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, griddepth, gridkey):
-    grid = [[0 for x in range(rect_diff_y+1)] for x in range(rect_diff_x+1)]
+    grid = [[0 for x in range(rect_diff_x+1)] for x in range(rect_diff_y+1)]
     for i in range(len(grid)):
         grid[i][0] = i * verticalStepper
     for j in range(len(grid)):
@@ -63,7 +63,7 @@ def return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, g
                 grid[i][j] = (grid[i-1][j]+griddepth)%gridkey * (grid[i][j-1]+griddepth)%gridkey
             
     for i in range(len(grid)):
-        for j in range(len(grid[0])):
+        for j in range(len(grid[i])):
             x = ((grid[i][j]+griddepth)%gridkey)%3
             if x == 0:
                 grid[i][j] = 3
@@ -76,7 +76,7 @@ def return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, g
 
 def draw(grid):
     for i in range(len(grid)):
-        for j in range(len(grid[0])):
+        for j in range(len(grid[i])):
             if grid[i][j] == 3:
                 grid[i][j] = 'L'
             if grid[i][j] == 2:
