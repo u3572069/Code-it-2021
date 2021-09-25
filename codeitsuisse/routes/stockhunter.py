@@ -29,96 +29,17 @@ def sevaluate():
 
         rect_diff_x = abs(entry_x - target_x)
         rect_diff_y = abs(entry_y - target_y)
-        grid_cost = create_grid_cost(rect_diff_x, rect_diff_y, griddepth, gridkey, horizontalStepper, verticalStepper)
-        min = minCost(grid_cost, target_x , target_y)
-        grid = create_grid(rect_diff_x, rect_diff_y, griddepth, gridkey, horizontalStepper, verticalStepper)
-        out = { "gridMap": grid, "minimumCost": min}
+        riskcost = return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, griddepth, gridkey)
+        x = minCost(riskcost, target_x, target_y)
+        maps = draw(riskcost)
+        out = { "gridMap": maps, "minimumCost": x}
         a.append(out)
     return json.dumps(a)
 
     
 
 
-import sys
 
-
-
-
-
-def riskindex(point, horizontalStepper, verticalStepper, griddepth, gridkey):
-
-    if point[1] == 0:
-        return Xriskindex(point, horizontalStepper)
-    if point[0] == 0:
-        return YriskIndex(point, verticalStepper)
-    else:
-        return risklevel([point[0]-1,point[1]], griddepth, gridkey, horizontalStepper, verticalStepper)*risklevel([point[0],point[1]-1], griddepth, gridkey, horizontalStepper, verticalStepper)
-
-def Xriskindex(point, horizontalStepper):
-    return point[0] * horizontalStepper
-
-def YriskIndex(point, verticalStepper):
-    return point[1] * verticalStepper
-
-def risklevel(point, griddepth, gridkey, horizontalStepper, verticalStepper):
-    return (riskindex(point, horizontalStepper, verticalStepper, griddepth, gridkey)+griddepth)%gridkey
-
-def riskcost(point, griddepth, gridkey, horizontalStepper, verticalStepper):
-    x = risklevel(point, griddepth, gridkey, horizontalStepper, verticalStepper)%3
-    if x == 0:
-        return 3
-    elif x == 1:
-        return 2
-    elif x ==2:
-        return 1
-
-def riskcategory(point, griddepth, gridkey, horizontalStepper, verticalStepper):
-    x = riskcost(point, griddepth, gridkey, horizontalStepper, verticalStepper)
-    if x == 3:  return 'L'
-    if x == 2:  return 'M'
-    if x == 1:  return 'S'
-
-# Minimum Costs
-def minCost(cost, target_x,target_y):
-    if (target_y < 0 or target_x < 0):
-        return sys.maxsize
-    elif (target_x == 0 and target_y == 0):
-        return cost[target_x][target_y]
-    else:
-        return cost[target_x][target_y] + min( minCost(cost, target_x-1, target_y-1),
-                                minCost(cost, target_x-1, target_y),
-                                minCost(cost, target_x, target_y-1) )
-
-def min(x, y, z):
-    if (x < y):
-        return x if (x < z) else z
-    else:
-        return y if (y < z) else z
-
-
-def create_grid(rect_diff_x, rect_diff_y, griddepth, gridkey, horizontalStepper, verticalStepper):
-
-    grid = []
-    grid_row = []
-    for y in range(rect_diff_x + 1):
-        for x in range(rect_diff_y + 1):
-            grid_row.append(riskcategory([x, y], griddepth, gridkey, horizontalStepper, verticalStepper))
-        grid.append(grid_row)
-        grid_row = []
-
-    return grid
-
-def create_grid_cost(rect_diff_x, rect_diff_y, griddepth, gridkey, horizontalStepper, verticalStepper):
-
-    grid = []
-    grid_row = []
-    for y in range(rect_diff_x + 1):
-        for x in range(rect_diff_y + 1):
-            grid_row.append(riskcost([x, y], griddepth, gridkey, horizontalStepper, verticalStepper))
-        grid.append(grid_row)
-        grid_row = []
-
-    return grid
 
 
 
@@ -126,6 +47,64 @@ def create_grid_cost(rect_diff_x, rect_diff_y, griddepth, gridkey, horizontalSte
  
 
 # Driver program to test above functions
+
+import sys
+
+
+def return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, griddepth, gridkey):
+    grid = [[0 for x in range(rect_diff_y+1)] for x in range(rect_diff_x+1)]
+    for i in range(len(grid)):
+        grid[i][0] = i * verticalStepper
+    for j in range(len(grid)):
+        grid[0][j] = j * horizontalStepper
+    for i in range(1,len(grid)):
+        for j in range(1,len(grid[0])):
+                grid[i][j] = (grid[i-1][j]+griddepth)%gridkey * (grid[i][j-1]+griddepth)%gridkey
+            
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            x = ((grid[i][j]+griddepth)%gridkey)%3
+            if x == 0:
+                grid[i][j] = 3
+            elif x == 1:
+                grid[i][j] = 2
+            elif x ==2:
+                grid[i][j] = 1
+    #print(grid)
+    return grid
+
+def draw(grid):
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 3:
+                grid[i][j] = 'L'
+            if grid[i][j] == 2:
+                grid[i][j] = 'M'
+            if grid[i][j] == 1:
+                grid[i][j] = 'S'
+    #print(grid)
+    return grid
+
+def minCost(cost, m, n):
+   # initialization
+   tc = [[0 for x in range(len(cost))] for x in range(len(cost[0]))]
+   # base case
+   tc[0][0] = cost[0][0]
+   # total cost(tc) array
+   for i in range(1, m + 1):
+      tc[i][0] = tc[i-1][0] + cost[i][0]
+   # tc array
+   for j in range(1, n + 1):
+      tc[0][j] = tc[0][j-1] + cost[0][j]
+   # rest tc array
+   for i in range(1, m + 1):
+      for j in range(1, n + 1):
+         tc[i][j] = min(tc[i-1][j-1], tc[i-1][j], tc[i][j-1]) + cost[i][j]
+   return tc[m][n]
+
+
+
+
 
 
 
