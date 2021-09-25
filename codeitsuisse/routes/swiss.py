@@ -1,5 +1,6 @@
 import logging
 import json
+import random
 
 from flask import request, jsonify
 
@@ -16,8 +17,13 @@ def stigevaluate():
         maxRating = i["maxRating"]
         coefficients = i["coefficients"]
         questions = i["questions"][0]
-        x = s(maxRating, questions)
-        out = { 'p':x[0], 'q':x[1]}
+        q = random.randint(1,maxRating)
+        p = random.randint(1,q)
+        while(p%q==0):
+            q = random.randint(1,maxRating)
+            p = random.randint(1,q)
+
+        out = { 'p':p, 'q':q}
         a.append(out)
     return json.dumps(a)
 
