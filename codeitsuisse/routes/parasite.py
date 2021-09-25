@@ -27,6 +27,31 @@ def evaluate2():
     return json.dumps(a)
 
 def case1and2(grid, people):
+    time_cur = 0
+    time_taken = []
+    healthy = False
+    for i in range(len(people)):
+        time_taken.append(-1)
+    changes = True
+
+    while changes == True:
+        
+        changes = False
+        time_cur += 1
+
+        for r in range(len(grid)):
+            for c in range(len(grid[r])):
+                if grid[r][c] == 3: # if infected case found
+                    
+                    if r!=0:
+                        if grid[r-1][c] == 1:
+                            grid[r-1][c] = -1
+                            changes = True
+                    if r!=(len(grid)-1):
+                        if grid[r+1][c] == 1:
+                            grid[r+1][c] = -1
+                            changes = True
+def case1and2(grid, people):
 
     time_cur = 0
     time_taken = []
@@ -180,5 +205,9 @@ def case3(grid):
         time_full = time_cur
 
     return (time_full)
+
+
+
+
 
 
