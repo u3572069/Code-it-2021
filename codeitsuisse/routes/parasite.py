@@ -62,7 +62,7 @@ def case1and2(grid, people):
                             changes = True
     
         for r in range(len(grid)):
-            for c in range(len(grid)):
+            for c in range(len(grid[r])):
                 if(grid[r][c] == -1):
                     grid[r][c] = 3
 
@@ -74,7 +74,7 @@ def case1and2(grid, people):
         
 
     for r in range(len(grid)):
-            for c in range(len(grid)):
+            for c in range(len(grid[r])):
                 if(grid[r][c] == 1):
                     healthy = True
 
@@ -163,14 +163,14 @@ def case3(grid):
                             changes = True
                     
         for r in range(len(grid)):
-            for c in range(len(grid)):
+            for c in range(len(grid[r])):
                 if(grid[r][c] == -1):
                     grid[r][c] = 3
 
         time_cur += 1
 
     for r in range(len(grid)):
-            for c in range(len(grid)):
+            for c in range(len(grid[r])):
                 if(grid[r][c] == 1):
                     healthy = True
 
