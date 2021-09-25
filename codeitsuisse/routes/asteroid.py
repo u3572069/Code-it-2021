@@ -59,7 +59,7 @@ def points(x1, x):
 def answer(s1):
     origin = -1
     max_score = 0
-    for sub in range(1, len(s1)):
+    for sub in range(len(s1)//3, 2*len(s1)//3):
         point = points(count(s1[0:sub])[::-1], count(s1[sub+1:]))
         if(point>max_score):
             max_score = point
