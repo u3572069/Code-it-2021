@@ -7,7 +7,7 @@ from codeitsuisse import app
 
 logger = logging.getLogger(__name__)
 
-@app.route('/stockhunter', methods=['POST'])
+@app.route('/stock-hunter', methods=['POST'])
 def sevaluate():
     input = request.get_json()
     logging.info("data sent for evaluation {}".format(input))
@@ -37,30 +37,7 @@ def sevaluate():
 
 import sys
 
-input = [{
-    "entryPoint":{
-        "first": 0,
-        "second": 0
-        },
-    "targetPoint":{
-        "first": 2,
-        "second": 2
-        },
-    "gridDepth": 156,
-    "gridKey":20183,
-    "horizontalStepper":16807,
-    "verticalStepper":48271
-}]
 
-'''
-FORMULAE:
-
-1. risk-index[x,0] = x*hor_st
-2. risk-index[0,y] = y*ver_st
-3. risk-index[x,y] = risklevel[x-1,y] * risklevel[x,y-1]
-4. risk-cost = risklevel%3 - 3:L, 2:M, 1:S
-5. risklevel = [risk-index + depth]%Gridkey
-'''
 
 
 
