@@ -8,5 +8,5 @@ import codeitsuisse.routes.decoder
 import codeitsuisse.routes.tictactoe
 import codeitsuisse.routes.stockhunter
 import codeitsuisse.routes.swiss
-
+import codeitsuisse.routes.cipher_text
 

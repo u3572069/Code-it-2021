@@ -53,10 +53,10 @@ import sys
 
 
 def return_index(rect_diff_y, rect_diff_x, verticalStepper, horizontalStepper, griddepth, gridkey):
-    grid = [[0 for x in range(rect_diff_x+1)] for x in range(rect_diff_y+1)]
+    grid = [[0 for x in range(rect_diff_y+1)] for x in range(rect_diff_x+1)]
     for i in range(len(grid)):
         grid[i][0] = i * verticalStepper
-    for j in range(len(grid)):
+    for j in range(len(grid[0])):
         grid[0][j] = j * horizontalStepper
     for i in range(1,len(grid)):
         for j in range(1,len(grid[0])):
@@ -78,13 +78,14 @@ def draw(grid):
     for i in range(len(grid)):
         for j in range(len(grid[i])):
             if grid[i][j] == 3:
-                grid[i][j] = 'L'
+                grid[i][j] = "L"
             if grid[i][j] == 2:
-                grid[i][j] = 'M'
+                grid[i][j] = "M"
             if grid[i][j] == 1:
-                grid[i][j] = 'S'
+                grid[i][j] = "S"
     #print(grid)
     return grid
+
 
 def minCost(cost, m, n):
    # initialization
