@@ -13,7 +13,6 @@ def evaluate1():
     logging.info("data sent for evaluation {}".format(data))
     inputValue = data.get("test_cases")
     # result = inputValue * inputValue
-    logging.info("My result :{}".format(result))
     out = {}
     a=[]
     x1={}
