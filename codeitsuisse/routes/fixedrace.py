@@ -1,5 +1,7 @@
 import logging
 import json
+import random
+from re import S
 
 from flask import request, jsonify
 
@@ -9,6 +11,12 @@ logger = logging.getLogger(__name__)
 
 @app.route('/fixedrace', methods=['POST'])
 def fevaluate():
-    data = request.get_data('data')
+    data = str(request.get_data('data'))
 
-    return data
+    data = data[3:len(data)-2]
+    x = list(data.split(','))
+    random.shuffle(x)
+    s =""
+    for i in x:
+        s+=i+","
+    return s[0:len(s)-1]
