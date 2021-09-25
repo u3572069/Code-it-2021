@@ -107,25 +107,9 @@ def case1and2(grid, people):
                 
         case4_ans =  max(diffs) -1
 
-
-    
-
-
-
-
     return (time_taken, time_full, case4_ans)
 
-
-
-
-
-
-
-
-
-
-
-
+    
 def case3(grid):
 
     time_cur = 0
@@ -198,14 +182,3 @@ def case3(grid):
     return (time_full)
 
 
-grid = [
-        [0, 3],
-        [0, 1]
-    ]
-
-observe = [[0,0]]
-
-p1,p2,p4 = case1and2(grid,observe)
-print(p1,"\n",p2)
-p3 = case3(grid)
-print(p3,"\n",p4)
