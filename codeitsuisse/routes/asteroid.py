@@ -17,7 +17,7 @@ def evaluate1():
     a=[]
     x1={}
     for i in inputValue:
-        x= maximize(i)
+        x= answer(i)
         out = {'input': i, 'score': x[0], 'origin': x[1]}
         a.append(out)
     logging.info("My result :{}".format(a))
@@ -26,64 +26,43 @@ def evaluate1():
 
 
 
-
-import collections
-
-    
-def score_count(arr, position):
-    hit_list = [arr[position]]
-
-    score = 0
-
-    if arr[position-1] != arr[position+1]:
-        return 0
-    for i in range(position+1,len(arr)):
-        if arr[i] in arr[0:position]:
-            hit_list.append(arr[i])
-    
-
-    hit_list = sorted(hit_list)
-    arr = sorted(arr)
-    dict1 = collections. Counter(arr)
-    dict2 = collections. Counter(hit_list)
-
-    dict3 = dict1.copy()
-    for i in dict3:
-        if i not in dict2:
-            dict1.pop(i)
-
-
-    values = dict1.values()
-    values_list1 = list(values)
-    values = dict2.values()
-    values_list2 = list(values)
-
-    #print(dict2)
-
-    #print("BBBB: ", values_list1, values_list2)
-    
-    for i in range(len(values_list2)):
-
-        if values_list2[i] != values_list1[i]:
-            values_list2[i] = values_list1[i]
-        #print("AAAA: ", values_list1, values_list2)
-            
-        if values_list2[i] >=10:
-            score+= values_list2[i]*2
-        elif values_list2[i] >=7:
-            score+= values_list2[i]*1.5
+def count(s):
+    s=s+"1"
+    c=1
+    a=[]
+    for i in range(0,len(s)-1):
+        if(s[i]!=s[i+1]):
+            a.append([s[i],c])
+            c=1
         else:
-            score+= values_list2[i]
+            c+=1
+    return a
 
+
+def points(x1, x):
+    score=1
+    s2 = 0
+    for i in range(0,min(len(x1), len(x))):
+        s2=0
+        if(x1[i][0]==x[i][0]):
+            s2=x1[i][1]+x[i][1]
+            if(s2>=10):
+                s2*=2
+            elif(s2>=7 and s2<10):
+                s2*=1.5
+            else:
+                s2=s2
+        score+=s2
     return score
 
-def maximize(arr):
-    max_score = 0
-    pos = 0
-    for i in range(1,len(arr)-1):
-        cur_score = score_count(arr,i)
-        if cur_score > max_score:
-            max_score = cur_score
-            pos = i
 
-    return [max_score, pos]
+def answer(s1):
+    origin = -1
+    max_score = 0
+    for sub in range(1, len(s1)):
+        point = points(count(s1[0:sub])[::-1], count(s1[sub+1:]))
+        if(point>max_score):
+            max_score = point
+            origin = sub
+
+    return([max_score, origin])
