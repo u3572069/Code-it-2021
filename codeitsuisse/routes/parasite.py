@@ -18,39 +18,24 @@ def evaluate2():
     for i in j:
         x1={}
         out={}
-        x= case1and2(i["grid"], i["interestedIndividuals"])
-        for k in range(0, len(i["interestedIndividuals"])):
-            x1[i["interestedIndividuals"][k]]=x[0][k]
+        keys_list = []
+        values_list = []
+        indi = []
+        z = []
+        for z in i["interestedIndividuals"]:
+            indi.append([int(i) for i in z.split(",")])
+        x= case1and2(i["grid"], indi)
+        logging.info("My x :{}".format(indi))
+        keys_list = i["interestedIndividuals"]
+        values_list = x[0]
+        zip_iterator = zip(keys_list, values_list)
+        x1 = dict(zip_iterator)
         out = {'room': i["room"], 'p1': x1, 'p2' : x[1], 'p3': case3(i["grid"]), 'p4' : x[2]}
         a.append(out)
     logging.info("My result :{}".format(a))
     return json.dumps(a)
 
-def case1and2(grid, people):
-    time_cur = 0
-    time_taken = []
-    healthy = False
-    for i in range(len(people)):
-        time_taken.append(-1)
-    changes = True
 
-    while changes == True:
-        
-        changes = False
-        time_cur += 1
-
-        for r in range(len(grid)):
-            for c in range(len(grid[r])):
-                if grid[r][c] == 3: # if infected case found
-                    
-                    if r!=0:
-                        if grid[r-1][c] == 1:
-                            grid[r-1][c] = -1
-                            changes = True
-                    if r!=(len(grid)-1):
-                        if grid[r+1][c] == 1:
-                            grid[r+1][c] = -1
-                            changes = True
 def case1and2(grid, people):
 
     time_cur = 0
