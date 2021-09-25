@@ -11,13 +11,13 @@ logger = logging.getLogger(__name__)
 def evaluate1():
     data = request.get_json()
     logging.info("data sent for evaluation {}".format(data))
-    # inputValue = data.get("input")
+    inputValue = data.get("test_cases")
     # result = inputValue * inputValue
     # logging.info("My result :{}".format(result))
     out = {}
     a=[]
     x1={}
-    for i in data:
+    for i in inputValue:
         x= maximize(i)
         out = {'input': i, 'score': x[0], 'origin': x[1]}
         a.append(out)
