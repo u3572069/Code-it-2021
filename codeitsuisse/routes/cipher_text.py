@@ -30,7 +30,7 @@ output = []
 
 challenge_one = input[0]
 def find_ak(challenge_one):
-    challenge_one_x = challenge_one["X"] 
+    challenge_one_x = int(challenge_one["X"] )
     challenge_one_y = challenge_one["Y"]
 
 
@@ -55,8 +55,8 @@ def find_ak(challenge_one):
     return(a,k)
 
 def calculate(chal, a):
-    for challenge in chal[1::]:
-        x = challenge["X"]
+    for challenge in chal[1:]:
+        x = int(challenge["X"])
         y = challenge["Y"]
         k = 1
 
