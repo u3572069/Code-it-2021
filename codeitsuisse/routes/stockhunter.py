@@ -108,7 +108,7 @@ def minCost(cost, m, n):
                             tc[i][j-1]) + cost[i][j]
   
     tc[m][n] = tc[m][n] - tc[0][0]+ cost[m][n]
-    return tc[m][n]
+    return 0
 
 
 
