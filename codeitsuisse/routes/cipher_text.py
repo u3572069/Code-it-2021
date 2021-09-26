@@ -13,7 +13,7 @@ def cevaluate():
     data = request.get_json()
     output=[]
     logging.info("data sent for evaluation {}".format(data))
-    for i in data:
+    for i in data[0:5]:
         output.append(calculate(int(i["X"]), int(i["D"]), i["Y"]))
     logging.info("My result :{}".format(output))
     return json.dumps(output)
@@ -26,7 +26,7 @@ def f(x):
     for i in range(1,x):
         c+=i*0.5**i
     
-    return '{0:.3f}'.format(c)
+    return truncate(c,3)
 
 def truncate(t, n):
     return math.floor(t * 10 ** n) / 10 ** n
