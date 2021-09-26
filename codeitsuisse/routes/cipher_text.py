@@ -1,5 +1,6 @@
 import logging
 import json
+import math
 
 from flask import request, jsonify
 
@@ -10,61 +11,32 @@ logger = logging.getLogger(__name__)
 @app.route('/cipher-cracking', methods=['POST'])
 def cevaluate():
     data = request.get_json()
+    output=[]
     logging.info("data sent for evaluation {}".format(data))
-    a,x = find_ak(data[0])
-    t = calculate(data, a)
-    out = [x[1]]
-    for i in t:
-        out.append(i)
-    logging.info("My result :{}".format(out))
-    return json.dumps(out)
+    for i in data:
+        output.append(calculate(int(i["X"]), int(i["D"]), i["Y"]))
+    logging.info("My result :{}".format(output))
+    return json.dumps(output)
 
 import hashlib
 
 # m = hashlib.sha256()
-def f(x, a):
-    return '{0:.3f}'.format(round(x / (x - a), 3))
-
-input = [{"D": 1, "X": 12321, "Y": "47c90ed5874ae5192dba5be539c5c4e60cdfb9c3f5b5db1828b19433b56c79b5", "est_mins" : 1.5}]
-output = []
-
-challenge_one = input[0]
-def find_ak(challenge_one):
-    challenge_one_x = int(challenge_one["X"] )
-    challenge_one_y = challenge_one["Y"]
-
-
-
-
-
-    a = 0
-    k = 1
-    found = False
-
-    while(hashlib.sha256((str(k) + "::" + str(f(challenge_one_x, a))).encode()).hexdigest() != challenge_one_y):
-        for i in range(challenge_one_x):
-            a = i
-            if(hashlib.sha256((str(k) + "::" + str(f(challenge_one_x, a))).encode()).hexdigest() == challenge_one_y):
-                found = True
-                break
-        if(found == True):
-            break
-        k += 1
-
-
-    return(a,k)
-
-def calculate(chal, a):
-    for challenge in chal[1:5]:
-        x = int(challenge["X"])
-        y = challenge["Y"]
-        k = 1
-
-        while(hashlib.sha256((str(k) + "::" + str(f(x, a))).encode()).hexdigest() != y):
-            k += 1
-        output.append(k)
+def f(x):
+    c = 0
+    for i in range(1,x):
+        c+=i*0.5**i
     
-    return output
+    return '{0:.3f}'.format(c)
+
+def truncate(t, n):
+    return math.floor(t * 10 ** n) / 10 ** n
+
+
+def calculate(x, d, y):
+    fu = f(x)
+    for k in range(1,10**d):
+        if(hashlib.sha256((str(k) + "::" + str(fu)).encode()).hexdigest() != y):
+            return k
 
 # print(hashlib.sha256((str(k) + "::" + str(f(challenge_one_x, 258))).encode()).hexdigest())
 # print(challenge_one_y)
