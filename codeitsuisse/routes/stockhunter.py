@@ -89,21 +89,26 @@ def draw(grid):
 
 
 def minCost(cost, m, n):
-   # initialization
-   tc = [[0 for x in range(len(cost))] for x in range(len(cost[0]))]
-   # base case
-   tc[0][0] = cost[0][0]
-   # total cost(tc) array
-   for i in range(1, m + 1):
-      tc[i][0] = tc[i-1][0] + cost[i][0]
-   # tc array
-   for j in range(1, n + 1):
-      tc[0][j] = tc[0][j-1] + cost[0][j]
-   # rest tc array
-   for i in range(1, m + 1):
-      for j in range(1, n + 1):
-         tc[i][j] = min(tc[i-1][j-1], tc[i-1][j], tc[i][j-1]) + cost[i][j]
-   return tc[m][n]
+    tc = [[0 for x in range(len(cost))] for x in range(len(cost[0]))]
+  
+    tc[0][0] = cost[0][0]
+  
+    # Initialize first column of total cost(tc) array
+    for i in range(1, m + 1):
+        tc[i][0] = tc[i-1][0] + cost[i][0]
+  
+    # Initialize first row of tc array
+    for j in range(1, n + 1):
+        tc[0][j] = tc[0][j-1] + cost[0][j]
+  
+    # Construct rest of the tc array
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            tc[i][j] = min(tc[i-1][j-1], tc[i-1][j],
+                            tc[i][j-1]) + cost[i][j]
+  
+    tc[m][n] = tc[m][n] - tc[0][0]+ cost[m][n]
+    return tc[m][n]
 
 
 
