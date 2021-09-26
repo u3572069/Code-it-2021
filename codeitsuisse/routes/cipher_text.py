@@ -23,7 +23,7 @@ import hashlib
 
 # m = hashlib.sha256()
 def f(x, a):
-    return '{0:.3f}'.format(x / (x - a))
+    return '{0:.3f}'.format(round(x / (x - a), 3))
 
 input = [{"D": 1, "X": 12321, "Y": "47c90ed5874ae5192dba5be539c5c4e60cdfb9c3f5b5db1828b19433b56c79b5", "est_mins" : 1.5}]
 output = []
@@ -55,7 +55,7 @@ def find_ak(challenge_one):
     return(a,k)
 
 def calculate(chal, a):
-    for challenge in chal[1:]:
+    for challenge in chal[1:5]:
         x = int(challenge["X"])
         y = challenge["Y"]
         k = 1

@@ -24,31 +24,32 @@ def evaluate2():
         z = []
         for z in i["interestedIndividuals"]:
             indi.append([int(i) for i in z.split(",")])
-        x= case1and2(i["grid"], indi)
+        x= case12(i["grid"], indi)
         logging.info("My x :{}".format(indi))
         keys_list = i["interestedIndividuals"]
         values_list = x[0]
         zip_iterator = zip(keys_list, values_list)
         x1 = dict(zip_iterator)
-        out = {'room': i["room"], 'p1': x1, 'p2' : x[1], 'p3': case3(i["grid"]), 'p4' : x[2]}
+        g = i["grid"]
+        out = {'room': i["room"], 'p1': x1, 'p2' : x[1], 'p3': case3(g), 'p4' : case4(g)}
         a.append(out)
     logging.info("My result :{}".format(a))
     return json.dumps(a)
 
 
-def case1and2(grid, people):
-
+def case12(grid,persons):
     time_cur = 0
-    time_taken = []
-    healthy = False
-    for i in range(len(people)):
-        time_taken.append(-1)
+    time_per_person = []
+    time_overall = 0
+    remaining = False
+    for i in range(len(persons)):
+        time_per_person.append(-1)
     changes = True
 
     while changes == True:
-        
+
         changes = False
-        time_cur += 1
+        time_cur+=1
 
         for r in range(len(grid)):
             for c in range(len(grid[r])):
@@ -56,51 +57,147 @@ def case1and2(grid, people):
                     
                     if r!=0:
                         if grid[r-1][c] == 1:
-                            grid[r-1][c] = -1
+                            grid[r-1][c] = 3
                             changes = True
                     if r!=(len(grid)-1):
                         if grid[r+1][c] == 1:
-                            grid[r+1][c] = -1
+                            grid[r+1][c] = 3
                             changes = True
                     if c!=0:
                         if grid[r][c-1] == 1:
-                            grid[r][c-1] = -1
+                            grid[r][c-1] = 3
                             changes = True
                     if c!=(len(grid[r])-1):
                         if grid[r][c+1] == 1:
-                            grid[r][c+1] = -1
+                            grid[r][c+1] = 3
                             changes = True
-    
-        for r in range(len(grid)):
-            for c in range(len(grid[r])):
-                if(grid[r][c] == -1):
-                    grid[r][c] = 3
 
-                    # CASE 1
-                    for p in range(len(people)):
-                        if r == people[p][0] and c == people[p][1]:
-                            time_taken[p] = time_cur
+        for p in range(len(persons)):
+            x = persons[p][0]
+            y = persons[p][1]
+            if grid[x][y] == 3:
+                time_per_person[p] = time_cur
 
-        
 
     for r in range(len(grid)):
-            for c in range(len(grid[r])):
-                if(grid[r][c] == 1):
-                    healthy = True
-
-    # CASE 2
-    if healthy == True:
-        time_full = -1
+        for c in range(len(grid[r])):
+            if grid[r][c] == 1:
+                remaining = True
+        
+    if remaining == True:
+        time_overall = -1
     else:
-        time_full = time_cur-1
+        time_overall = time_cur-1
+
+    return [time_per_person, time_overall]
+
+def case3(grid):
+    time_cur = 0
+    energy = 0
+    remaining = False
+    changes = True
+
+    while changes == True:
+
+        changes = False
+        time_cur+=1
+
+        for r in range(len(grid)):
+            for c in range(len(grid[r])):
+                if grid[r][c] == 3: # if infected case found
+
+                    if r!=0 and c!=0:
+                        if grid[r-1][c-1] == 1:
+                            grid[r-1][c-1] = 3
+                            changes = True
+
+                    if r!=(len(grid)-1) and c!=0:
+                        if grid[r+1][c-1] == 1:
+                            grid[r+1][c-1] = 3
+                            changes = True
+
+                    if r!=0 and c!=(len(grid[r])-1):
+                        if grid[r-1][c+1] == 1:
+                            grid[r-1][c+1] = 3
+                            changes = True
+
+                    if r!=(len(grid)-1) and c!=(len(grid[r])-1):
+                        if grid[r+1][c+1] == 1:
+                            grid[r+1][c+1] = 3
+                            changes = True
+                    
+                    if r!=0:
+                        if grid[r-1][c] == 1:
+                            grid[r-1][c] = 3
+                            changes = True
+                    if r!=(len(grid)-1):
+                        if grid[r+1][c] == 1:
+                            grid[r+1][c] = 3
+                            changes = True
+                    if c!=0:
+                        if grid[r][c-1] == 1:
+                            grid[r][c-1] = 3
+                            changes = True
+                    if c!=(len(grid[r])-1):
+                        if grid[r][c+1] == 1:
+                            grid[r][c+1] = 3
+                            changes = True
 
 
-    threeclose = []
-    ones = []
-    diffs= []
-    case4_ans = 0
-    #CASE 4 IN OPERATION
-    if healthy == True:
+    for r in range(len(grid)):
+        for c in range(len(grid[r])):
+            if grid[r][c] == 1:
+                remaining = True
+        
+    if remaining == True:
+        time_overall = -1
+    else:
+        time_overall = time_cur
+
+    return time_overall
+
+def case4(grid):
+    #print(grid)
+    time_cur = 0
+    remaining = False
+    changes = True
+
+    while changes == True:
+
+        changes = False
+        time_cur+=1
+
+        for r in range(len(grid)):
+            for c in range(len(grid[r])):
+                if grid[r][c] == 3: # if infected case found
+                    
+                    if r!=0:
+                        if grid[r-1][c] == 1:
+                            grid[r-1][c] = 3
+                            changes = True
+                    if r!=(len(grid)-1):
+                        if grid[r+1][c] == 1:
+                            grid[r+1][c] = 3
+                            changes = True
+                    if c!=0:
+                        if grid[r][c-1] == 1:
+                            grid[r][c-1] = 3
+                            changes = True
+                    if c!=(len(grid[r])-1):
+                        if grid[r][c+1] == 1:
+                            grid[r][c+1] = 3
+                            changes = True
+
+
+    for r in range(len(grid)):
+        for c in range(len(grid[r])):
+            if grid[r][c] == 1:
+                remaining = True
+        
+    if remaining == True:
+        threeclose = []
+        ones = []
+        diffs= []
 
         for r in range(len(grid)):
             for c in range(len(grid[r])):
@@ -115,82 +212,10 @@ def case1and2(grid, people):
                 if abs(threeclose[j][0]-ones[i][0]) + abs(threeclose[j][1] - ones[i][1])  < diffs[i]:
                     diffs[i] = abs(threeclose[j][0]-ones[i][0]) + abs(threeclose[j][1] - ones[i][1])
                 
-        case4_ans =  max(diffs) -1
+        return  max(diffs)-1
 
-    return (time_taken, time_full, case4_ans)
-
-    
-def case3(grid):
-
-    time_cur = 0
-    healthy = False
-    changes = True
-    while changes == True:
-        changes = False
-
-        for r in range(len(grid)):
-            for c in range(len(grid[r])):
-                if grid[r][c] == 3: 
-                    
-                    if r!=0 and c!=0:
-                        if grid[r-1][c-1] == 1:
-                            grid[r-1][c-1] = -1
-                            changes = True
-
-                    if r!=(len(grid)-1) and c!=0:
-                        if grid[r+1][c-1] == 1:
-                            grid[r+1][c-1] = -1
-                            changes = True
-
-                    if r!=0 and c!=(len(grid[r])-1):
-                        if grid[r-1][c+1] == 1:
-                            grid[r-1][c+1] = -1
-                            changes = True
-
-                    if r!=(len(grid)-1) and c!=(len(grid[r])-1):
-                        if grid[r+1][c+1] == 1:
-                            grid[r+1][c+1] = -1
-                            changes = True
-
-                    if r!=0:
-                        if grid[r-1][c] == 1:
-                            grid[r-1][c] = -1
-                            changes = True
-
-                    if r!=(len(grid)-1):
-                        if grid[r+1][c] == 1:
-                            grid[r+1][c] = -1
-                            changes = True
-
-                    if c!=0:
-                        if grid[r][c-1] == 1:
-                            grid[r][c-1] = -1
-                            changes = True
-
-                    if c!=(len(grid[r])-1):
-                        if grid[r][c+1] == 1:
-                            grid[r][c+1] = -1
-                            changes = True
-                    
-        for r in range(len(grid)):
-            for c in range(len(grid[r])):
-                if(grid[r][c] == -1):
-                    grid[r][c] = 3
-
-        time_cur += 1
-
-    for r in range(len(grid)):
-            for c in range(len(grid[r])):
-                if(grid[r][c] == 1):
-                    healthy = True
-
-    if healthy == True:
-        time_full = -1
     else:
-        time_full = time_cur
-
-    return (time_full)
-
+        return 0
 
 
 
